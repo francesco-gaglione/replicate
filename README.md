@@ -1,0 +1,4 @@
+## Instructions
+
+* yarn
+* yarn build
