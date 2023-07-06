@@ -1,4 +1,4 @@
-import { WalletConnectSupportedChains, WalletConnectWrapper } from 'react-components';
+import {createWalletConnectConfig, WalletConnectSupportedChains, WalletConnectWrapper} from 'react-components';
 import { AppProps } from "next/app";
 import { useAccount } from 'wagmi';
 import '../styles/globals.css';
@@ -23,12 +23,14 @@ function AppLayout({ Component, pageProps }: any): JSX.Element {
 
 }
 
+createWalletConnectConfig("e13c98a2e244316aa8f73949f6922f01", [WalletConnectSupportedChains.POLYGON_MUMBAI])
+
 // Main app component
 export default function App({ Component }: AppProps) {
 
     return (
         <>
-            <WalletConnectWrapper projectId={"<<your-id>>"} chains={[WalletConnectSupportedChains.POLYGON_MUMBAI]}>
+            <WalletConnectWrapper>
                 <AppLayout Component={Component} />
             </WalletConnectWrapper>
         </>

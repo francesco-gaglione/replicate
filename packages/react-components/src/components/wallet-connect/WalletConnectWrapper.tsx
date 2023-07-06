@@ -11,26 +11,35 @@ export enum WalletConnectSupportedChains {
     POLYGON_MUMBAI
 }
 
-export function WalletConnectWrapper(props: {children: React.ReactNode, projectId: string, chains: Array<WalletConnectSupportedChains>}) {
+let wagmiConfig: any;
+let id: string;
+let ethereumClient: EthereumClient;
 
-    const { children, projectId, chains } = props;
+export function createWalletConnectConfig(projectId: string, chains: Array<WalletConnectSupportedChains>) {
+    id = projectId;
 
     const mappedChains: any[] = generateChainArray(chains);
 
     const {publicClient} = configureChains(mappedChains, [w3mProvider({projectId})])
-    const wagmiConfig = createConfig({
+    wagmiConfig = createConfig({
         autoConnect: true,
         connectors: w3mConnectors({projectId: projectId, chains: mappedChains}),
         publicClient
     })
-    const ethereumClient: EthereumClient = new EthereumClient(wagmiConfig, mappedChains);
+    ethereumClient = new EthereumClient(wagmiConfig, mappedChains);
+
+}
+
+
+export function WalletConnectWrapper(props: {children: React.ReactNode }) {
+    const { children} = props;
 
     return (
         <>
             <WagmiConfig config={wagmiConfig}>
                 {children}
             </WagmiConfig>
-            <Web3Modal projectId={projectId} ethereumClient={ethereumClient}/>
+            <Web3Modal projectId={id} ethereumClient={ethereumClient}/>
         </>
     )
 
