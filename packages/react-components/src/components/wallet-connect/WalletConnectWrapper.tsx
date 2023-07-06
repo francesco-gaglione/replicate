@@ -15,7 +15,7 @@ let wagmiConfig: any;
 let id: string;
 let ethereumClient: EthereumClient;
 
-export function createWalletConnectConfig(projectId: string, chains: Array<WalletConnectSupportedChains>) {
+export function createWalletConnectConfig(projectId: string, chains: Array<WalletConnectSupportedChains>): {config: any, client: any} {
     id = projectId;
 
     const mappedChains: any[] = generateChainArray(chains);
@@ -28,18 +28,23 @@ export function createWalletConnectConfig(projectId: string, chains: Array<Walle
     })
     ethereumClient = new EthereumClient(wagmiConfig, mappedChains);
 
+    return {
+        config: wagmiConfig,
+        client: ethereumClient
+    }
+
 }
 
 
-export function WalletConnectWrapper(props: {children: React.ReactNode }) {
-    const { children} = props;
+export function WalletConnectWrapper(props: {children: React.ReactNode, config: any, client: EthereumClient }) {
+    const { children, config, client} = props;
 
     return (
         <>
-            <WagmiConfig config={wagmiConfig}>
+            <WagmiConfig config={config}>
                 {children}
             </WagmiConfig>
-            <Web3Modal projectId={id} ethereumClient={ethereumClient}/>
+            <Web3Modal projectId={id} ethereumClient={client}/>
         </>
     )
 

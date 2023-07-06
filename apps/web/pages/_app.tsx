@@ -23,14 +23,14 @@ function AppLayout({ Component, pageProps }: any): JSX.Element {
 
 }
 
-createWalletConnectConfig("e13c98a2e244316aa8f73949f6922f01", [WalletConnectSupportedChains.POLYGON_MUMBAI])
+let config = createWalletConnectConfig("e13c98a2e244316aa8f73949f6922f01", [WalletConnectSupportedChains.POLYGON_MUMBAI])
 
 // Main app component
 export default function App({ Component }: AppProps) {
 
     return (
         <>
-            <WalletConnectWrapper>
+            <WalletConnectWrapper config={config.config} client={config.client}>
                 <AppLayout Component={Component} />
             </WalletConnectWrapper>
         </>
